@@ -31,10 +31,12 @@ endif()
 # SDL2main is not needed
 set(SDL2_BUILDING_LIBRARY ON)
 
-find_package(SDL2 REQUIRED)
-FIND_PACKAGE(SDL2_mixer REQUIRED)
+INCLUDE(FindPkgConfig)
 
-include_directories(${SDL2_INCLUDE_DIR} ${SDL2_MIXER_INCLUDE_DIR})
+PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
+PKG_SEARCH_MODULE(SDL2_MIXER REQUIRED SDL2_mixer)
+
+include_directories(${SDL2_INCLUDE_DIRS} ${SDL2_MIXER_INCLUDE_DIRS})
 get_property(dirs DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY INCLUDE_DIRECTORIES)
 foreach(dir ${dirs})
   message(STATUS "Include dir='${dir}'")
@@ -215,7 +217,7 @@ if(${CMAKE_VERSION} VERSION_GREATER "3.16.0" OR ${CMAKE_VERSION} VERSION_EQUAL "
             )
 endif()
 
-target_link_libraries(SpaceCadetPinball ${SDL2_LIBRARY} ${SDL2_MIXER_LIBRARY})
+target_link_libraries(SpaceCadetPinball ${SDL2_LIBRARIES} ${SDL2_MIXER_LIBRARIES})
 
 # On Windows, copy DLL to output
 if(WIN32)
@@ -227,7 +229,7 @@ if(WIN32)
         string(REGEX REPLACE "lib$" "bin" SDL2_DLL_PATH ${SDL2_DLL_PATH})
         string(REGEX REPLACE "lib$" "bin" SDL2_MIXER_DLL_PATH ${SDL2_MIXER_DLL_PATH})
     endif()
-    message(STATUS "copy paths='${SDL2_DLL_PATH}' '${SDL2_MIXER_DLL_PATH}'") 
+    message(STATUS "copy paths='${SDL2_DLL_PATH}' '${SDL2_MIXER_DLL_PATH}'")
     add_custom_command(TARGET SpaceCadetPinball POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_if_different "${SDL2_DLL_PATH}/SDL2.dll" $<TARGET_FILE_DIR:SpaceCadetPinball>
         COMMAND ${CMAKE_COMMAND} -E copy_if_different "${SDL2_MIXER_DLL_PATH}/SDL2_mixer.dll" $<TARGET_FILE_DIR:SpaceCadetPinball>
@@ -243,4 +245,20 @@ if(UNIX AND NOT APPLE)
 		install(FILES "${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/Icon_${S}x${S}.png" DESTINATION
 			"share/icons/hicolor/${S}x${S}/apps" RENAME "${PROJECT_NAME}.png")
 	endforeach(S)
+endif()
+
+if(NINTENDO_SWITCH)
+    execute_process(COMMAND convert SpaceCadetPinball/Icon_1.ico[3] -resize x256 SpaceCadetPinball/Icon_1.jpg)
+
+    nx_generate_nacp(SpaceCadetPinball.nacp
+        NAME "SpaceCadetPinball"
+        AUTHOR "k4zmu2a, averne"
+        VERSION "V1.1.1"
+    )
+
+    nx_create_nro(SpaceCadetPinball
+        NACP SpaceCadetPinball.nacp
+        ICON ${CMAKE_CURRENT_SOURCE_DIR}/SpaceCadetPinball/Icon_1.jpg
+        ROMFS res
+    )
 endif()
