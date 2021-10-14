@@ -25,37 +25,61 @@ optionsStruct options::Options
 			"Left Flipper key",
 			{InputTypes::Keyboard, SDLK_z},
 			{InputTypes::Mouse, SDL_BUTTON_LEFT},
-			{InputTypes::GameController, SDL_CONTROLLER_BUTTON_LEFTSHOULDER}
+#ifndef __SWITCH__
+                    {InputTypes::GameController, SDL_CONTROLLER_BUTTON_LEFTSHOULDER},
+#else
+            {InputTypes::GameController, 8}, // HidNpadButton_ZL
+#endif
 		},
 		{
 			"Right Flipper key",
 			{InputTypes::Keyboard, SDLK_SLASH},
 			{InputTypes::Mouse,SDL_BUTTON_RIGHT},
-			{InputTypes::GameController, SDL_CONTROLLER_BUTTON_RIGHTSHOULDER}
+#ifndef __SWITCH__
+                    {InputTypes::GameController, SDL_CONTROLLER_BUTTON_RIGHTSHOULDER},
+#else
+            {InputTypes::GameController, 9}, // HidNpadButton_ZR
+#endif
 		},
 		{
 			"Plunger key",
 			{InputTypes::Keyboard, SDLK_SPACE},
 			{InputTypes::Mouse,SDL_BUTTON_MIDDLE},
-			{InputTypes::GameController, SDL_CONTROLLER_BUTTON_A}
+#ifndef __SWITCH__
+                    {InputTypes::GameController, SDL_CONTROLLER_BUTTON_A},
+#else
+            {InputTypes::GameController, 0}, // HidNpadButton_A
+#endif
 		},
 		{
 			"Left Table Bump key",
 			{InputTypes::Keyboard, SDLK_x},
 			{InputTypes::Mouse,SDL_BUTTON_X1},
-			{InputTypes::GameController, SDL_CONTROLLER_BUTTON_DPAD_LEFT}
+#ifndef __SWITCH__
+                    {InputTypes::GameController, SDL_CONTROLLER_BUTTON_DPAD_LEFT},
+#else
+            {InputTypes::GameController, 12}, // HidNpadButton_Left
+#endif
 		},
 		{
 			"Right Table Bump key",
 			{InputTypes::Keyboard, SDLK_PERIOD},
 			{InputTypes::Mouse,SDL_BUTTON_X2},
-			{InputTypes::GameController, SDL_CONTROLLER_BUTTON_DPAD_RIGHT}
+#ifndef __SWITCH__
+                    {InputTypes::GameController, SDL_CONTROLLER_BUTTON_DPAD_RIGHT},
+#else
+            {InputTypes::GameController, 14}, // HidNpadButton_Right
+#endif
 		},
 		{
 			"Bottom Table Bump key",
 			{InputTypes::Keyboard, SDLK_UP},
 			{InputTypes::Mouse,SDL_BUTTON_X2 + 1},
-			{InputTypes::GameController, SDL_CONTROLLER_BUTTON_DPAD_UP}
+#ifndef __SWITCH__
+                    {InputTypes::GameController, SDL_CONTROLLER_BUTTON_DPAD_UP},
+#else
+            {InputTypes::GameController, 15}, // HidNpadButton_Down
+#endif
 		},
 	},
 	{"Sounds", true},
