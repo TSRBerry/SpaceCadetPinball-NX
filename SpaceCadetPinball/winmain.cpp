@@ -1,3 +1,7 @@
+#ifdef __SWITCH__
+#	include <switch.h>
+#endif
+
 #include "pch.h"
 #include "winmain.h"
 
@@ -70,12 +74,27 @@ int winmain::WinMain(LPCSTR lpCmdLine)
 
 	pb::quickFlag = strstr(lpCmdLine, "-quick") != nullptr;
 
+	int w, h;
+
+#ifndef __SWITCH__
+	w = 800, h = 556;
+#else
+	switch (appletGetOperationMode()) {
+		case AppletOperationMode_Console:
+			w = 1920, h = 1080;
+			break;
+		case AppletOperationMode_Handheld:
+			w = 1280, h = 720;
+			break;
+	}
+#endif
+
 	// SDL window
 	SDL_Window* window = SDL_CreateWindow
 	(
 		pb::get_rc_string(Msg::STRING139),
 		SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-		800, 556,
+		w, h,
 		SDL_WINDOW_HIDDEN | SDL_WINDOW_RESIZABLE
 	);
 	MainWindow = window;
@@ -84,6 +103,16 @@ int winmain::WinMain(LPCSTR lpCmdLine)
 		pb::ShowMessageBox(SDL_MESSAGEBOX_ERROR, "Could not create window", SDL_GetError());
 		return 1;
 	}
+
+#ifdef __SWITCH__
+    for (int i = 0; i < 2; i++) {
+        if (SDL_JoystickOpen(i) == NULL) {
+            SDL_Log("SDL_JoystickOpen: %s\n", SDL_GetError());
+            SDL_Quit();
+            return -1;
+        }
+    }
+#endif
 
 	// If HW fails, fallback to SW SDL renderer.
 	SDL_Renderer* renderer = nullptr;
@@ -173,7 +202,7 @@ int winmain::WinMain(LPCSTR lpCmdLine)
 		}
 		ImGui_Render_Init(renderer);
 		ImGui::StyleColorsDark();
-		
+
 		ImGui_ImplSDL2_InitForSDLRenderer(window, Renderer);
 		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard | ImGuiConfigFlags_NavEnableGamepad;
 
@@ -346,19 +375,23 @@ void winmain::MainLoop()
 
 			if (UpdateToFrameCounter >= UpdateToFrameRatio)
 			{
+				// Hide menu on Switch since it can't be interacted with
+#ifndef __SWITCH__
 				ImGui_ImplSDL2_NewFrame();
 				ImGui_Render_NewFrame();
 				ImGui::NewFrame();
 				RenderUi();
-
+#endif
 				SDL_RenderClear(Renderer);
 				// Alternative clear hack, clear might fail on some systems
 				// Todo: remove original clear, if save for all platforms
 				SDL_RenderFillRect(Renderer, nullptr);
 				render::PresentVScreen();
 
+#ifndef __SWITCH__
 				ImGui::Render();
 				ImGui_Render_RenderDrawData(ImGui::GetDrawData());
+#endif
 
 				SDL_RenderPresent(Renderer);
 				frameCounter++;
@@ -839,6 +872,31 @@ int winmain::event_handler(const SDL_Event* event)
 		fullscrn::shutdown();
 		return_value = 0;
 		return 0;
+	case SDL_JOYBUTTONDOWN:
+		pb::InputDown({InputTypes::GameController, event->jbutton.button});
+		switch (event->jbutton.button) {
+			case 2: // HidNpadButton_X
+				new_game();
+				break;
+			case 3: // HidNpadButton_Y
+				pause();
+				break;
+			case 10: // HidNpadButton_Plus
+				end_pause();
+				bQuit = 1;
+				fullscrn::shutdown();
+				return_value = 0;
+				return 0;
+			case 1:
+				fullscrn::window_size_changed();
+				break;
+			default:
+				break;
+		}
+		break;
+	case SDL_JOYBUTTONUP:
+		pb::InputUp({InputTypes::GameController, event->jbutton.button});
+		break;
 	case SDL_KEYUP:
 		pb::InputUp({InputTypes::Keyboard, event->key.keysym.sym});
 		break;
@@ -1159,13 +1217,13 @@ void winmain::RenderFrameTimeDialog()
 
 		static bool scrollPlot = true;
 		ImGui::Checkbox("Scroll Plot", &scrollPlot);
-		
+
 		ImGui::SameLine();
 		ImGui::SliderFloat("Window Size", &gfrWindow, 0.1f, 15, "%.3fsec", ImGuiSliderFlags_AlwaysClamp);
 
 		{
 			float average = 0.0f, dev = 0.0f;
-			for (auto n : gfrDisplay) 
+			for (auto n : gfrDisplay)
 			{
 				average += n;
 				dev += std::abs(target - n);
