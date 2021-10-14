@@ -52,32 +52,56 @@ void options::InitPrimary()
 		{
 			{InputTypes::Keyboard, SDLK_z},
 			{InputTypes::Mouse, SDL_BUTTON_LEFT},
+#ifndef __SWITCH__
 			{InputTypes::GameController, SDL_CONTROLLER_BUTTON_LEFTSHOULDER},
+#else
+			{InputTypes::GameController, 8}, // HidNpadButton_ZL
+#endif
 		},
 		{
 			{InputTypes::Keyboard, SDLK_SLASH},
 			{InputTypes::Mouse, SDL_BUTTON_RIGHT},
+#ifndef __SWITCH__
 			{InputTypes::GameController, SDL_CONTROLLER_BUTTON_RIGHTSHOULDER},
+#else
+			{InputTypes::GameController, 9}, // HidNpadButton_ZR
+#endif
 		},
 		{
 			{InputTypes::Keyboard, SDLK_SPACE},
 			{InputTypes::Mouse, SDL_BUTTON_MIDDLE},
+#ifndef __SWITCH__
 			{InputTypes::GameController, SDL_CONTROLLER_BUTTON_A},
+#else
+			{InputTypes::GameController, 0}, // HidNpadButton_A
+#endif
 		},
 		{
 			{InputTypes::Keyboard, SDLK_x},
 			{InputTypes::Mouse, SDL_BUTTON_X1},
+#ifndef __SWITCH__
 			{InputTypes::GameController, SDL_CONTROLLER_BUTTON_DPAD_LEFT},
+#else
+			{InputTypes::GameController, 12}, // HidNpadButton_Left
+#endif
 		},
 		{
 			{InputTypes::Keyboard, SDLK_PERIOD},
 			{InputTypes::Mouse, SDL_BUTTON_X2},
+#ifndef __SWITCH__
 			{InputTypes::GameController, SDL_CONTROLLER_BUTTON_DPAD_RIGHT},
+#else
+			{InputTypes::GameController, 14}, // HidNpadButton_Right
+#endif
 		},
 		{
 			{InputTypes::Keyboard, SDLK_UP},
 			{InputTypes::Mouse, SDL_BUTTON_X2 + 1},
+#ifndef __SWITCH__
 			{InputTypes::GameController, SDL_CONTROLLER_BUTTON_DPAD_UP},
+#else
+			{InputTypes::GameController, 15}, // HidNpadButton_Down
+#endif
 		},
 	};
 	GetInput("Left Flipper key", Options.Key.LeftFlipper);
