@@ -144,7 +144,7 @@ int winmain::WinMain(LPCSTR lpCmdLine)
 	bool mixOpened = false, noAudio = strstr(lpCmdLine, "-noaudio") != nullptr;
 	if (!noAudio)
 	{
-		if ((Mix_Init(MIX_INIT_MID_Proxy) & MIX_INIT_MID_Proxy) == 0)
+		if ((Mix_Init(MIX_INIT_MP3) & MIX_INIT_MP3) == 0)
 		{
 			printf("Could not initialize SDL MIDI, music might not work.\nSDL Error: %s\n", SDL_GetError());
 			SDL_ClearError();
