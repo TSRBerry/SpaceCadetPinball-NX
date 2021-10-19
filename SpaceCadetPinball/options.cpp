@@ -66,7 +66,7 @@ optionsStruct options::Options
 			{InputTypes::Keyboard, SDLK_PERIOD},
 			{InputTypes::Mouse,SDL_BUTTON_X2},
 #ifndef __SWITCH__
-                    {InputTypes::GameController, SDL_CONTROLLER_BUTTON_DPAD_RIGHT},
+            {InputTypes::GameController, SDL_CONTROLLER_BUTTON_DPAD_RIGHT},
 #else
             {InputTypes::GameController, 14}, // HidNpadButton_Right
 #endif
@@ -76,14 +76,14 @@ optionsStruct options::Options
 			{InputTypes::Keyboard, SDLK_UP},
 			{InputTypes::Mouse,SDL_BUTTON_X2 + 1},
 #ifndef __SWITCH__
-                    {InputTypes::GameController, SDL_CONTROLLER_BUTTON_DPAD_UP},
+            {InputTypes::GameController, SDL_CONTROLLER_BUTTON_DPAD_UP},
 #else
             {InputTypes::GameController, 15}, // HidNpadButton_Down
 #endif
 		},
 	},
 	{"Sounds", true},
-	{"Music", false},
+	{"Music", true},
 	{"FullScreen", false},
 	{"Players", 1},
 	{"Screen Resolution", -1 },
