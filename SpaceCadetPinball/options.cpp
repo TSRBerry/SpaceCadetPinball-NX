@@ -91,7 +91,7 @@ optionsStruct options::Options
 {
 	KeyDft,
 	{"Sounds", true},
-	{"Music", false },
+	{"Music", true },
 	{"FullScreen", false },
 	{"Players", 1 },
 	{"Screen Resolution", -1 },
