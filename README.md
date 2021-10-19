@@ -19,6 +19,9 @@ Supports data files from Windows and Full Tilt versions of the game.
 - X for new game, Y for pausing,
 - \+ for quitting.
 
+The controls as well as audio (music/effects) can be configured from imgui_pb.ini, which is created in the same directory as the executable upon first launch.
+Refer to <https://github.com/devkitPro/SDL/blob/switch-sdl2/src/joystick/switch/SDL_sysjoystick.c#L47-L55>.
+
 ## Known source ports
 
 | Platform           | Author          | URL                                                                                                        |
