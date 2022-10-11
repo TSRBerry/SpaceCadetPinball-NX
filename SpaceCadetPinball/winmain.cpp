@@ -140,8 +140,20 @@ int winmain::WinMain(LPCSTR lpCmdLine)
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");
 
+#ifndef __SWITCH__
 	auto prefPath = SDL_GetPrefPath("", "SpaceCadetPinball");
 	auto basePath = SDL_GetBasePath();
+#else
+	char cwd[PATH_MAX];
+	getcwd(cwd, PATH_MAX);
+	size_t cwd_len = strlen(cwd) + 2;
+	auto prefPath = (char *)SDL_malloc(cwd_len);
+	SDL_snprintf(prefPath, cwd_len, "%s/", cwd);
+	auto basePath = (char *)"romfs:/";
+#endif
+
+	printf("Using prefPath: %s\n", prefPath);
+	printf("Using basePath: %s\n", basePath);
 
 	// SDL mixer init
 	bool mixOpened = false, noAudio = strstr(lpCmdLine, "-noaudio") != nullptr;
