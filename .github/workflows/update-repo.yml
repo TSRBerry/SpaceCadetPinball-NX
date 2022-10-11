@@ -1,0 +1,74 @@
+name: Get updates
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Daily at 8:40
+    - cron: "40 8 * * *"
+
+jobs:
+  update_repo:
+    name: Check for updates
+    outputs:
+      rebase: ${{ steps.compare.outputs.update-required }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          repository: k4zmu2a/SpaceCadetPinball
+
+      - name: Cache latest upstream commit hash
+        uses: actions/cache@v3
+        with:
+          key: latest-commit
+          path: ./latest-commit.txt
+
+      - name: Compare the latest upstream commit hash
+        id: compare
+        shell: bash
+        run: |
+          [[ -f ./latest-commit.txt ]] \
+            && ([[ $(git rev-parse HEAD) != $(cat ./latest-commit.txt) ]] \
+              && echo "::set-output name=update-required::true" \
+              || echo "::set-output name=update-required::false") \
+            || echo "::set-output name=update-required::true"
+
+      - name: Save latest upstream commit hash
+        shell: bash
+        run: git rev-parse HEAD > ./latest-commit.txt
+
+  rebase:
+    name: Update fork
+    runs-on: ubuntu-latest
+    needs: update_repo
+    if: ${{ needs.update_repo.outputs.rebase == 'true' }}
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Configure git
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+
+      - name: Add upstream remote
+        run: |
+          git remote add upstream https://github.com/k4zmu2a/SpaceCadetPinball
+
+      - name: Get and push upstream master
+        run: |
+          git fetch --all
+          git checkout -B master --track upstream/master -f
+          git push -u origin master --force-with-lease
+
+      - name: Perform switch rebase
+        run: |
+          git checkout switch
+          git rebase master
+
+      - name: Force-push changes
+        run: |
+          git push --force-with-lease
