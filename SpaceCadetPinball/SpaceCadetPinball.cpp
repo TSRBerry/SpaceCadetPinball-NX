@@ -7,10 +7,18 @@
 
 extern "C" void userAppInit() {
 	romfsInit();
+
+	// Initialise sockets
+	socketInitializeDefault();
+
+	// redirect stdout & stderr over network to nxlink
+	nxlinkStdio();
 }
 
 extern "C" void userAppExit() {
 	romfsExit();
+	
+	socketExit();
 }
 
 #endif
