@@ -239,7 +239,7 @@ if(UNIX AND NOT APPLE)
 endif()
 
 if(NINTENDO_SWITCH)
-    execute_process(COMMAND convert SpaceCadetPinball/Icon_1.ico[3] -resize x256 SpaceCadetPinball/Icon_1.jpg)
+    execute_process(COMMAND convert ${CMAKE_SOURCE_DIR}/SpaceCadetPinball/Icon_1.ico[3] -resize x256 ${CMAKE_SOURCE_DIR}/SpaceCadetPinball/Icon_1.jpg)
 
     nx_generate_nacp(SpaceCadetPinball.nacp
         NAME "SpaceCadetPinball"
@@ -249,7 +249,7 @@ if(NINTENDO_SWITCH)
 
     nx_create_nro(SpaceCadetPinball
         NACP SpaceCadetPinball.nacp
-        ICON ${CMAKE_CURRENT_SOURCE_DIR}/SpaceCadetPinball/Icon_1.jpg
-        ROMFS res
+        ICON ${CMAKE_SOURCE_DIR}/SpaceCadetPinball/Icon_1.jpg
+        ROMFS ${CMAKE_SOURCE_DIR}/res
     )
 endif()
