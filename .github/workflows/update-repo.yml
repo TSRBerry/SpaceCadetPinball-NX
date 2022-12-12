@@ -29,9 +29,9 @@ jobs:
         run: |
           [[ -f ./latest-commit.txt ]] \
             && ([[ $(git rev-parse HEAD) != $(cat ./latest-commit.txt) ]] \
-              && echo "::set-output name=update-required::true" \
-              || echo "::set-output name=update-required::false") \
-            || echo "::set-output name=update-required::true"
+              && echo "update-required=true" >> $GITHUB_OUTPUT \
+              || echo "update-required=false") >> $GITHUB_OUTPUT \
+            || echo "update-required=true" >> $GITHUB_OUTPUT
 
       - name: Save latest upstream commit hash
         shell: bash
