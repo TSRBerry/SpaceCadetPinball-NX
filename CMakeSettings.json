@@ -69,6 +69,15 @@
       "ctestCommandArgs": "",
       "inheritEnvironments": [ "linux_clang_x64" ],
       "wslPath": "${defaultWSLPath}"
+    },
+    {
+      "name": "Switch-Debug",
+      "configurationType": "Debug",
+      "buildRoot": "${projectDir}\\build",
+      "installRoot": "${projectDir}\\out",
+      "cmakeCommandArgs": "-DCMAKE_TOOLCHAIN_FILE=\"${DEVKITPRO}/cmake/Switch.cmake\"",
+      "buildCommandArgs": "",
+      "ctestCommandArgs": ""
     }
   ]
 }
