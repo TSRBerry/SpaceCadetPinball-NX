@@ -1,0 +1,55 @@
+name: Publish
+
+on:
+  push:
+    branches: ["switch"]
+    paths-ignore:
+      - "*.md"
+      - ".github/**"
+      - "Screenshots/**"
+      - "LICENSE"
+      - "*.json"
+      - "*.sh"
+      - "Doc/**"
+  workflow_dispatch:
+
+concurrency: release
+
+permissions:
+  contents: write
+
+jobs:
+  publish_release:
+    name: Release
+    runs-on: ubuntu-latest
+    container:
+      image: devkitpro/devkita64:latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install requirements
+        shell: bash
+        run: apt install -y imagemagick
+
+      - name: Build
+        shell: bash
+        run: |
+          chmod +x ./build-switch.sh
+          ./build-switch.sh
+
+      - name: Pack
+        shell: bash
+        run: |
+          cd out
+          zip -r SpaceCadetPinball-NX.zip ./
+
+      - name: Publish release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: ./out/SpaceCadetPinball-NX.zip
+          artifactsContentType: application/zip
+          commit: ${{ github.sha }}
+          tag: release-${{ github.run_number }}
+          generateReleaseNotes: true
+          makeLatest: true
