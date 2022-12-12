@@ -8,7 +8,7 @@ Reverse engineering of `3D Pinball for Windows - Space Cadet`, a game bundled wi
 
 ## How to play
 
-Place compiled executable into a folder containing original game resources (not included).\
+Place original game resources (not included) into a folder called "Pinball" next to the NRO.
 Supports data files from Windows and Full Tilt versions of the game.
 
 ### Switch controls
@@ -25,10 +25,10 @@ Refer to <https://github.com/devkitPro/SDL/blob/switch-sdl2/src/joystick/switch/
 ## Known source ports
 
 | Platform           | Author          | URL                                                                                                        |
-| ------------------ | --------------- | ---------------------------------------------------------------------------------------------------------- |
+| ------------------ | --------------- |------------------------------------------------------------------------------------------------------------|
 | PS Vita            | Axiom           | <https://github.com/suicvne/SpaceCadetPinball_Vita>                                                        |
 | Emscripten         | alula           | <https://github.com/alula/SpaceCadetPinball> <br> Play online: <https://alula.github.io/SpaceCadetPinball> |
-| Nintendo Switch    | averne          | <https://github.com/averne/SpaceCadetPinball-NX>                                                           |
+| Nintendo Switch    | averne,TSRBerry | <https://github.com/TSRBerry/SpaceCadetPinball-NX>                                                         |
 | webOS TV           | mariotaku       | <https://github.com/webosbrew/SpaceCadetPinball>                                                           |
 | Android (WIP)      | Iscle           | https://github.com/Iscle/SpaceCadetPinball                                                                 |
 | Nintendo Wii       | MaikelChan      | https://github.com/MaikelChan/SpaceCadetPinball                                                            |

@@ -243,13 +243,16 @@ if(NINTENDO_SWITCH)
 
     nx_generate_nacp(SpaceCadetPinball.nacp
         NAME "SpaceCadetPinball"
-        AUTHOR "k4zmu2a, averne"
-        VERSION "V1.1.1"
+        AUTHOR "k4zmu2a, averne, TSRBerry"
+        VERSION "V1.1.2"
     )
 
     nx_create_nro(SpaceCadetPinball
         NACP SpaceCadetPinball.nacp
         ICON ${CMAKE_SOURCE_DIR}/SpaceCadetPinball/Icon_1.jpg
-        ROMFS ${CMAKE_SOURCE_DIR}/res
     )
+
+    install(FILES "${CMAKE_BINARY_DIR}/${PROJECT_NAME}.nro" DESTINATION "switch/${PROJECT_NAME}")
+    install(DIRECTORY DESTINATION "switch/${PROJECT_NAME}/Pinball")
+    install(CODE "message(NOTICE \"Make sure to convert the .MID files to .mp3, before copying them into the 'Pinball' directory!\")")
 endif()

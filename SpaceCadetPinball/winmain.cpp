@@ -143,10 +143,14 @@ int winmain::WinMain(LPCSTR lpCmdLine)
 #else
 	char cwd[PATH_MAX];
 	getcwd(cwd, PATH_MAX);
-	size_t cwd_len = strlen(cwd) + 2;
+
+    size_t cwd_len = strlen(cwd) + 2;
+    size_t basePath_len = cwd_len + 8;
+
 	auto prefPath = (char *)SDL_malloc(cwd_len);
+    auto basePath = (char *)SDL_malloc(basePath_len);
 	SDL_snprintf(prefPath, cwd_len, "%s/", cwd);
-	auto basePath = (char *)"romfs:/";
+    SDL_snprintf(basePath, basePath_len, "%s/Pinball/", cwd);
 #endif
 
 	printf("Using prefPath: %s\n", prefPath);
