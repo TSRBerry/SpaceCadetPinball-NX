@@ -18,7 +18,7 @@ jobs:
           repository: k4zmu2a/SpaceCadetPinball
 
       - name: Cache latest upstream commit hash
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           key: latest-commit
           path: ./latest-commit.txt
