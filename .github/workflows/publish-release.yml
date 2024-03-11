@@ -30,7 +30,9 @@ jobs:
 
       - name: Install requirements
         shell: bash
-        run: apt install -y imagemagick
+        run: |
+          apt update
+          apt install -y imagemagick
 
       - name: Build
         shell: bash
