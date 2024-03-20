@@ -263,5 +263,4 @@ if(NINTENDO_SWITCH)
 
     install(FILES "${CMAKE_BINARY_DIR}/${PROJECT_NAME}.nro" DESTINATION "switch/${PROJECT_NAME}")
     install(DIRECTORY DESTINATION "switch/${PROJECT_NAME}/Pinball")
-    install(CODE "message(NOTICE \"Make sure to convert the .MID files to .mp3, before copying them into the 'Pinball' directory!\")")
 endif()
