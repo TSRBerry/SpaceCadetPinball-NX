@@ -41,7 +41,7 @@ Refer to <https://github.com/devkitPro/SDL/blob/switch-sdl2/src/joystick/switch/
 | AmigaOS 4          | rjd324          | http://aminet.net/package/game/actio/spacecadetpinball-aos4                                                |
 | Android (WIP)      | fexed           | https://github.com/fexed/Pinball-on-Android                                                                |
 
-Platforms covered by this project: desktop Windows, Linux and macOS.
+Platforms covered by this project: Nintendo Switch
 
 <br>
 <br>
